@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
+        crossorigin="anonymous"></script>
+
+<style>
+    
+body {
+    background-color: black;
+}
+
+H4,p { 
+    color: #2f5687; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#humanInput {
+    background-color: black;
+    color: #2f5687; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+}
+</style>
+
+</head>
+
+<body>
+    <div>
+        <h4>Ask me anything :</h4>
+    </div>
+    <input type="text" id="humanInput">
+    <div id="chat"></div>
+</body>
+<script>
+
+    $(function () {
+        
+        $("#humanInput").keypress((e) => {
+         
+            if (e.which == 13) {
+                let chat = $("#chat")
+                let input = $("#humanInput");
+                console.log(input.val());
+                chat.after("<p>" + input.val() + "</p>");
+                input.val("");
+                window.setTimeout(() => {  
+                    let chat = $("#chat");
+                    chat.after("<p>NO.</p>");
+                }, 750);
+                input.focus();
+
+            }
+        })
+    })
+</script>
+</html>
