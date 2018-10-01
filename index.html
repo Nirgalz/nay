@@ -31,11 +31,17 @@ H4,p {
 body {
     height: 100%;
 }
+
+#mailReply {
+    background-color: black;
+    color: #2f5687; 
+}
 </style>
 
 </head>
 
 <body>
+    <button id="mailReply">Smart mail replier </button>
     <div>
         <h4>Ask me anything :</h4>
     </div>
@@ -45,27 +51,73 @@ body {
 <script>
 
     $(function () {
+
+        var options = {
+            mode: "chatBot",
+            defaultMode: "chatBot",
+            language: "ENG"
+        }
+
+        $("#mailReply").on("click", () => {
+            let btn = $("#mailReply");
+            if (options.mode != "smartReply") {
+                options.mode = "smartReply";
+                btn.css("background-color", "#2f5687");
+                btn.css("color", "white");
+            } else {
+                btn.css("background-color", "black");
+                btn.css("color", "#2f5687");
+                options.mode = options.defaultMode;
+            }
+            console.log(options.mode);
+        })
+
+
         
         $("#humanInput").keypress((e) => {
          
             if (e.which == 13) {
-                let chat = $("#chat")
-                let input = $("#humanInput");
-                chat.after("<p>" + input.val() + "</p>");
-                var string = input.val();
-                input.val("");
 
-                window.setTimeout(() => {  
-                    let chat = $("#chat");
-                    console.log(string);
-                    chat.after("<p>" + smartProcessor(string) + "</p>");
-                }, 750);
-                input.focus();
+                var chat = $("#chat")
+                var input = $("#humanInput");
+                var string = input.val();
+                if (options.mode == "chatBot") {
+                    chat.after("<p>" + input.val() + "</p>");
+                    input.val("");
+
+                    window.setTimeout(() => {  
+                        let chat = $("#chat");
+                        console.log(string);
+                        chat.after("<p>" + chatBot(string) + "</p>");
+                    }, 750);
+                    input.focus();
+                }
+                else if (options.mode == "smartReply") {
+                   chatBot(string);
+                }
+
+               
+               
 
             }
         });
 
-        function smartProcessor(string) {
+        function smartReply (string) {
+            var lexicon = [];
+            let words = string.split(" ");
+            console.log(words);
+            words.forEach(element => {
+                console.log(element);
+                if(element.length > 3) {
+                    lexicon.push(element);
+                }
+            });
+            console.log(element);
+        }
+
+
+
+        function chatBot(string) {
             let words = string.split(" ");
             console.log(words[0].toLowerCase());
             if (words[0].toLowerCase() == "what") {
