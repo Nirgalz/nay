@@ -51,17 +51,32 @@ body {
             if (e.which == 13) {
                 let chat = $("#chat")
                 let input = $("#humanInput");
-                console.log(input.val());
                 chat.after("<p>" + input.val() + "</p>");
+                var string = input.val();
                 input.val("");
+
                 window.setTimeout(() => {  
                     let chat = $("#chat");
-                    chat.after("<p>NO.</p>");
+                    console.log(string);
+                    chat.after("<p>" + smartProcessor(string) + "</p>");
                 }, 750);
                 input.focus();
 
             }
-        })
+        });
+
+        function smartProcessor(string) {
+            let words = string.split(" ");
+            console.log(words[0].toLowerCase());
+            if (words[0].toLowerCase() == "what") {
+                return "What the fuck is " + words[2] + "?";
+            } else if (words[0].toLowerCase() == "it" && words[1].toLowerCase() == "is") {
+                return "The fuck do I care ?"
+            }
+            else {
+                return "NO.";
+            }
+        }
     })
 </script>
 </html>
