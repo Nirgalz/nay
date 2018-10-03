@@ -36,14 +36,22 @@ body {
     background-color: #2f5687;
     color: white; 
 }
+
+#language {
+    background-color: #2f5687;
+    color: white; 
+}
+
 </style>
 
 </head>
 
 <body>
+    <button id="language">ENG</button>
+
     <button id="mailReply">Smart mail replier </button>
     <div>
-        <h4>Ask me anything :</h4>
+        <h4>Input data :</h4>
     </div>
     <input type="text" id="humanInput">
     <div id="chat"></div>
@@ -58,6 +66,7 @@ body {
             language: "ENG"
         }
 
+        //switch mode
         $("#mailReply").on("click", () => {
             let btn = $("#mailReply");
             if (options.mode != "smartReply") {
@@ -71,8 +80,36 @@ body {
             }
         })
 
+        //switch language
+        $("#language").on("click", () => {
+            let btn = $("#language");
+            if (options.language == "ENG") {
+                btn.text("FR");
+                options.language = "FR";
+                console.log(options.language);
+            }
+            else {
+                btn.text("ENG");
+                options.language = "ENG";
+            }
+        })
 
-        
+        var i8n = {
+            FR: {
+                smartReplies: [
+                    ["Merci pour ton email à propos de ", ", cela m'aide beaucoup pour mon travail au sujet de ", ". En revanche, je ne suis pas certain pour ", ". Cela pourrait être lié à ", "."]
+                ]
+            },
+            ENG: {
+                smartReplies: [
+                    ["thanks for your mail about ",", this helps me a lot for my work on ",". I\'m not sure about ", " though. It may be related to ", "."]
+
+                ]
+            }
+        }
+
+
+        //input
         $("#humanInput").keypress((e) => {
          
             if (e.which == 13) {
@@ -98,7 +135,7 @@ body {
             }
         });
 
-
+        // 'smart' replies
         function smartReply (string) {
             var lexicon = [];
             let words = string.split(" ");
@@ -107,17 +144,28 @@ body {
                     lexicon.push(element);
                 }
             });
-        
-            return " thanks for your mail about " + randomIndex(lexicon) + ", this helps me a lot for my work on " + randomIndex(lexicon) + ". I\'m not sure about " + randomIndex(lexicon) + " though. It may be related to " + randomIndex(lexicon) + "."; 
+            
+            var sentence = [];
+            var reply = "";
+            if (options.language == "FR") {
+                sentence = i8n.FR.smartReplies[0];
+            } 
+            else if (options.language == "ENG") {
+                sentence = i8n.ENG.smartReplies[0];
+            } 
 
+            sentence.forEach(element => {
+                reply += (element + randomIndex(lexicon));
+            })
+            return reply;
         }
-
+        //randomiser
         function randomIndex(array) {
             return array[Math.floor(Math.random() * array.length)];
         }
 
 
-
+        //chatbot
         function chatBot(string) {
             let words = string.split(" ");
             console.log(words[0].toLowerCase());
