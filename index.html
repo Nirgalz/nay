@@ -97,7 +97,8 @@ body {
         var i8n = {
             FR: {
                 smartReplies: [
-                    ["Merci pour ton email à propos de ", ", cela m'aide beaucoup pour mon travail au sujet de ", ". En revanche, je ne suis pas certain pour ", ". Cela pourrait être lié à ", "."]
+                    ["Merci pour ton email à propos de ", ", cela m'aide beaucoup pour mon travail au sujet de ", ". En revanche, je ne suis pas certain pour ", ". Cela pourrait être lié à ", "."],
+                    ["Je ne suis pas certain que ", " puisse aider à ", ". Peut-être qu'en associant ", " à ", " le résultat serait plus ", "."]
                 ]
             },
             ENG: {
@@ -113,7 +114,6 @@ body {
         $("#humanInput").keypress((e) => {
          
             if (e.which == 13) {
-                console.log(options.mode);
                 var chat = $("#chat")
                 var input = $("#humanInput");
                 var string = input.val();
@@ -123,7 +123,6 @@ body {
 
                     window.setTimeout(() => {  
                         let chat = $("#chat");
-                        console.log(string);
                         chat.after("<p>" + chatBot(string) + "</p>");
                     }, 750);
                     input.focus();
@@ -138,6 +137,7 @@ body {
         // 'smart' replies
         function smartReply (string) {
             var lexicon = [];
+            //.replace(".","").replace(";","");
             let words = string.split(" ");
             words.forEach(element => {
                 if(element.length > 4) {
@@ -148,10 +148,10 @@ body {
             var sentence = [];
             var reply = "";
             if (options.language == "FR") {
-                sentence = i8n.FR.smartReplies[0];
+                sentence = randomIndex(i8n.FR.smartReplies) ;
             } 
             else if (options.language == "ENG") {
-                sentence = i8n.ENG.smartReplies[0];
+                sentence = randomIndex(i8n.ENG.smartReplies);
             } 
 
             sentence.forEach(element => {
@@ -168,7 +168,6 @@ body {
         //chatbot
         function chatBot(string) {
             let words = string.split(" ");
-            console.log(words[0].toLowerCase());
             if (words[0].toLowerCase() == "what") {
                 return "What the fuck is " + words[2] + "?";
             } else if (words[0].toLowerCase() == "it" && words[1].toLowerCase() == "is") {
